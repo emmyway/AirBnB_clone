@@ -40,9 +40,29 @@ class FileStorage:
         key: str = f"{type(obj).__name__}.{getattr(obj, 'id')}"
         self.__objects[key] = obj.to_dict()
 
-    def save(self):
-        pass
+    def save(self) -> None:
+        """
+        Method that serializes objects to the JSON file
+        """
+        # Jsonify the objects
+        json_data = json.dumps(self.all())
 
-    def reload(self):
-        pass
+        # Write objects to json file
+        with open(self.__file_path,mode= 'w', encoding='utf-8') as file:
+            file.write(json_data)
+
+    def reload(self) -> None:
+        """
+        Method that is used to load objects from JSON file if exists
+        """
+        contents: str = ""
+        # Check if file exists
+        if os.path.exists(self.__file_path):
+            # Read contents from file
+            with open(self.__file_path, mode='r', encoding='utf-8') as file:
+                contents: str = file.read()
+            # Deserialize contents and save to instance __objects
+            self.__objects: Dict = json.loads(contents)
+        
+
 

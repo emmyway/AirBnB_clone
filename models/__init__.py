@@ -1,16 +1,12 @@
 #!/usr/bin/python3
 """
-In this file we will create an instance of FileStorage and use it\
-in our BaseModels class
+File that initiates an instance of file_storage
 """
 
 
 from .engine.file_storage import FileStorage
 
-
-# Initiate FileStorage  object to interact with the file system
+# intiate FileStorage instance
 storage: FileStorage = FileStorage()
-# Use reload method
+# Reload
 storage.reload()
-
-
