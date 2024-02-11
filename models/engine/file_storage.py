@@ -26,7 +26,26 @@ class FileStorage:
             - Python Dictionary.
         """
         return self.__objects
+    
+    def find(self, model: str, id: str) -> Dict:
+        """
+        method used to find an instance of a model by it's class name and ID
 
+        Args:
+            - model (str): Represents the class name of a model
+            - id (str): Represents the id of the model
+
+        Returns:
+            - Dict or None in case the instance does not exist
+        """
+        # Key
+        key = f"{model}.{id}"
+        # Check if key exists in objects
+        if key in self.__objects:
+            return self.__objects[key]
+        # Return none incase if instance does not exist
+        return None
+        
     def new(self, obj: object) -> None:
         """
         Method sets in objects the object with key <obj class name>.id
@@ -50,6 +69,26 @@ class FileStorage:
         # Write objects to json file
         with open(self.__file_path,mode= 'w', encoding='utf-8') as file:
             file.write(json_data)
+    
+    def delete(self, model, id) -> None:
+        """
+        Method used to delete an instance using class name and id
+
+        Args:
+            - model (str): Represents the class name of a model
+            - id (str): Represents the id of the model
+
+        Returns:
+            - None
+        """
+        # Get the key using model name and id
+        key = f"{model}.{id}"
+        
+        if key in self.__objects:
+            # Delete instance
+            del self.__objects[key]
+            # Save
+            self.save()
 
     def reload(self) -> None:
         """

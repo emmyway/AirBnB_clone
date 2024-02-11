@@ -21,8 +21,8 @@ class BaseModel:
         # Check if kwargs exists
         if kwargs:
             # Get the dictionary of attributes from kwargs
-            kwargs.pop("__class__")
-            kwargs.pop("updated_at")
+            if "__class__" in kwargs:
+                kwargs.pop("__class__")
             # Remmeber that it is a string so we have to convert it to datetime format= "%Y-%m-%dT%H:%M:%S.%f"
             kwargs['created_at'] = datetime.datetime.strptime(kwargs['created_at'], "%Y-%m-%dT%H:%M:%S.%f")
             self.__dict__.update(**kwargs)
@@ -45,6 +45,21 @@ class BaseModel:
         """
         attributes: dict = self.__dict__
         attributes["__class__"] = str(self.__class__.__name__)
+
+        return "[{}] ({}) {}".format(
+            self.__class__.__name__,
+            self.id,
+            attributes,
+        )
+    
+    def __repr__(self) -> str:
+        """
+        String Representation of Object
+
+        Returns:
+            - String
+        """
+        attributes: dict = self.__dict__
 
         return "[{}] ({}) {}".format(
             self.__class__.__name__,
