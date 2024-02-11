@@ -5,7 +5,7 @@ File that contains BaseModel class that defines all common attributes/methods\
 """
 import uuid
 import datetime
-from models import storage
+import models
 
 class BaseModel:
     """
@@ -33,7 +33,7 @@ class BaseModel:
             # Updated at time for the class instance
             self.updated_at = datetime.datetime.now()
             # Storage
-            storage.new(self)
+            models.storage.new(self)
     
     def __str__(self) -> str:
         """
@@ -73,9 +73,9 @@ class BaseModel:
         # Update updated add
         self.updated_at = datetime.datetime.now()
         # Update the key
-        storage.new(self)
+        models.storage.new(self)
         # Call storage.save()
-        storage.save()
+        models.storage.save()
     
     def to_dict(self) -> object:
         """
