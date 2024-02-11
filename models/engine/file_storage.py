@@ -45,7 +45,7 @@ class FileStorage:
         Method that serializes objects to the JSON file
         """
         # Jsonify the objects
-        json_data = json.dumps(self.__objects)
+        json_data = json.dumps(self.all())
 
         # Write objects to json file
         with open(self.__file_path,mode= 'w', encoding='utf-8') as file:
