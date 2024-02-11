@@ -5,7 +5,6 @@ This file will contain Main console
 import cmd
 from models.base_model import BaseModel
 from models import storage
-from typing import Union
 
 
 class HBNBCommand(cmd.Cmd):
@@ -48,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Get arguments
-        arguments: list[str] = args.split(" ")
+        arguments = args.split(" ")
         # Best usecase for this is match case where as if the model exists it operates
         match (arguments[0]):
             case "BaseModel":
@@ -73,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Get arguments
-        arguments: list[str] = args.split(" ")
+        arguments = args.split(" ")
 
         # Check if the model is supported or not
         if arguments[0] not in self.support_models:
@@ -107,7 +106,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Get arguments
-        arguments: list[str] = args.split(" ")
+        arguments = args.split(" ")
 
         # Check if the model is supported or not
         if arguments[0] not in self.support_models:
@@ -141,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
 
         # if no argument just print them
         if not args:
-            reformed: list = []
+            reformed = []
             for key, value in list(models.items()):
                 copy_value = {k: v for k, v in value.items() if k != "__class__"}
                 reconvert: object
@@ -181,7 +180,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Get arguments
-        arguments: list[str] = args.split(" ")
+        arguments = args.split(" ")
 
         # Check if the model is supported or not
         if arguments[0] not in self.support_models:
