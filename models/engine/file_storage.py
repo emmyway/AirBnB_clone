@@ -5,6 +5,12 @@ File that contains a class called FileStorage
 import json
 import os
 from typing import Dict
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
 
 class FileStorage:
     """
