@@ -2,7 +2,6 @@
 """
 File that contains a class called FileStorage
 """
-
 import json
 import os
 from typing import Dict

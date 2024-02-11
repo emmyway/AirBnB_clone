@@ -3,7 +3,6 @@
 File that contains BaseModel class that defines all common attributes/methods\
       for other classes
 """
-
 import uuid
 import datetime
 from models import storage

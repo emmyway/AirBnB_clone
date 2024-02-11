@@ -1,13 +1,11 @@
 #!/usr/bin/python3
-
 """
 This file will contain Main console
 """
-
 import cmd
 from models.base_model import BaseModel
 from models import storage
-from typing import Dict, Union
+from typing import Union
 
 
 class HBNBCommand(cmd.Cmd):
@@ -20,7 +18,7 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = "(hbnb) "
-    support_models: list[str] = [
+    support_models = [
         "BaseModel",
     ]
 
@@ -88,7 +86,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Grab all instances
-        instance: Union[Dict, None] = storage.find(arguments[0], arguments[1])
+        instance = storage.find(arguments[0], arguments[1])
         # Check if instance exists
         if not instance:
             print("** no instance found **")
@@ -122,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Grab all instances
-        instance: Union[Dict, None] = storage.find(arguments[0], arguments[1])
+        instance = storage.find(arguments[0], arguments[1])
         # Check if instance exists
         if not instance:
             print("** no instance found **")
@@ -139,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
             - args (str): Input that represent the command input as in string.
         """
         # Get the models
-        models: Dict = storage.all()
+        models = storage.all()
 
         # if no argument just print them
         if not args:
@@ -196,7 +194,7 @@ class HBNBCommand(cmd.Cmd):
             return
 
         # Grab all instances
-        instance: Union[Dict, None] = storage.find(arguments[0], arguments[1])
+        instance = storage.find(arguments[0], arguments[1])
         # Check if instance exists
         if not instance:
             print("** no instance found **")
@@ -215,7 +213,7 @@ class HBNBCommand(cmd.Cmd):
         parameter: str = arguments[2]
         value: str = arguments[3]
 
-        instance_copy: Dict = {k: v for k, v in instance.items()}
+        instance_copy = {k: v for k, v in instance.items()}
         # instance to model
         model: object
         if instance_copy["__class__"] == "BaseModel":
