@@ -16,7 +16,7 @@ class HBNBCommand(cmd.Cmd):
         - support_models (list(str)): list that contains supported models
     """
 
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
     support_models = [
         "BaseModel",
     ]
@@ -27,7 +27,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """EOF command to exit the program"""
-        print("\nExiting the HBNB console.")
+        print()
         return True
 
     def emptyline(self):
