@@ -49,15 +49,14 @@ class HBNBCommand(cmd.Cmd):
         # Get arguments
         arguments = args.split(" ")
         # Best usecase for this is match case where as if the model exists it operates
-        match (arguments[0]):
-            case "BaseModel":
-                # Initiate a new instance of base model
-                new: BaseModel = BaseModel()
-                # Don't forget to save
-                new.save()
-            case _:
-                # Default case in case the model entered is does not exist
-                print("** class doesn't exist **")
+        if arguments[0] == "BaseModel":
+            # Initiate a new instance of base model
+            new: BaseModel = BaseModel()
+            # Don't forget to save
+            new.save()
+        else:
+            # Default case in case the model entered is does not exist
+            print("** class doesn't exist **")
 
     def do_show(self, args):
         """
@@ -161,9 +160,8 @@ class HBNBCommand(cmd.Cmd):
         # Print out the results
         models: list = []
 
-        match (args):
-            case "BaseModel":
-                models: list = [repr(BaseModel(value)) for value in filtered_models]
+        if args == "BaseModel":
+            models: list = [repr(BaseModel(value)) for value in filtered_models]
 
         print(models)
 
