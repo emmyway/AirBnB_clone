@@ -1,0 +1,94 @@
+#  !/ust/bin/python3
+'''
+A file for testing file_storage module, a module for all storage \
+        purpose and retrievals
+'''
+import os
+import unittest
+from unittest.mock import Mock
+from typing import Dict
+from models.engine.file_storage import FileStorage
+from models.base_model import BaseModel
+
+
+class TestFileStorage(unittest.TestCase):
+    '''
+    Test class for testing the functionality of Filestorage attributes \
+            and methods
+    '''
+    def setup(self):
+        try:
+            os.rename("file.json", "temp.json")
+        except Exception:
+            pass
+
+    def teardown(self):
+        try:
+            #  remove used file
+            os.remove("file.json")
+        except Exception:
+            pass
+
+        try:
+            #  replace org content
+            os.rename("temp.json", "file.json")
+        except Exception:
+            pass
+
+    def test_all(self) -> None:
+        #  instantiate class
+        store: FileStorage = FileStorage()
+        #  test
+        self.assertEqual(dict, type(store.all()))
+
+    def test_with_args(self) -> None:
+        #  instantiate class
+        store: FileStorage = FileStorage()
+        #  test
+        with self.assertRaises(TypeError):
+            store.all(None)
+
+    def test_new_no_arg(self) -> None:
+        #  instantiate class
+        store: FileStorage = FileStorage()
+        #  test
+        with self.assertRaises(AttributeError):
+            store.new(None)
+
+    def test_save(self) -> None:
+        #  instantiate class
+        store: FileStorage = FileStorage()
+        common_model: BaseModel = BaseModel()
+
+        store.save() #  perform a save action
+
+        #  perform a save action
+        json_str = ""
+        with open("file.json", "r") as f:
+            #  get saved text and read to json_str
+            json_str = f.read()
+        #  test
+        self.assertIsInstance(json_str, str)
+        self. assertIn("BaseModel." + common_model.id, json_str)
+        with self.assertRaise(AttributeError):
+            store.save(abc)
+
+    def test_reload(self) -> None:
+        #  instantiate class
+        store: FileStorage = FileStorage()
+        common_model: BaseModel = BaseModel()
+        #  perform a reload()
+        store.reload()
+
+        #  with name mangling access attribute dict
+        test_obj = FileStorage._FileStorage__objects
+
+        #  test
+        self.assertIsInstance(test_obj, dict)
+        self.assertIn("BaseModel." + common_model.id, test_obj)
+        with self.assertRaises(AttributeError):
+            store.reload(abc)
+
+
+if __name__ == "__main__":
+    unittest.main()
