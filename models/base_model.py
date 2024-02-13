@@ -24,7 +24,8 @@ class BaseModel:
             if "__class__" in kwargs:
                 kwargs.pop("__class__")
             format: str = "%Y-%m-%dT%H:%M:%S.%f"
-            # Remmeber that it is a string so we have to convert it to datetime format= "%Y-%m-%dT%H:%M:%S.%f"
+            # Remmeber that it is a string so we have to.
+            # convert it to datetime format= "%Y-%m-%dT%H:%M:%S.%f"
             kwargs["created_at"] = datetime.datetime.strptime(
                 kwargs["created_at"], format
             )
@@ -86,7 +87,8 @@ class BaseModel:
 
     def to_dict(self) -> object:
         """
-        Getter method dictionary containing all keys/values of __dict__ of the instance
+        Getter method dictionary containing all keys/values of\
+          __dict__ of the instance
 
         Returns:
             - Python Dictionary!.

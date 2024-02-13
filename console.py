@@ -60,7 +60,8 @@ class HBNBCommand(cmd.Cmd):
 
         # Get arguments
         arguments = args.split(" ")
-        # Best usecase for this is match case where as if the model exists it operates
+        # Best usecase for this is match case where as
+        # if the model exists it operates
         if arguments[0] in self.support_models:
             # Initiate a new instance of base model
             new = eval(arguments[0])()
@@ -69,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             # Default case in case the model entered is does not exist
             print("** class doesn't exist **")
-        
+
     def do_show(self, args):
         """
         Method that commits show command
@@ -161,7 +162,8 @@ class HBNBCommand(cmd.Cmd):
                 return False
             # Print out the results
             models = [
-                repr(element) for element in models.values()
+                repr(element)
+                for element in models.values()
                 if element.__class__.__name__ == args
             ]
             print(models)
@@ -224,18 +226,6 @@ class HBNBCommand(cmd.Cmd):
         print("*** Unknown syntax: {}".format(args))
         return False
 
+
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
-
-
-
-
-
-
-
-
-
-
-
-
-

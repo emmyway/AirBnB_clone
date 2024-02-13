@@ -61,7 +61,8 @@ class TestFileStorage(unittest.TestCase):
         store: FileStorage = FileStorage()
         common_model: BaseModel = BaseModel()
 
-        common_model.save()  #  perform a save action
+        #  perform a save action
+        common_model.save()
 
         #  perform a save action
         json_str = ""

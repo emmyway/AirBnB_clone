@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""                                                                            
+"""
 Test File for the BaseModel class, a class that defines all common \
 attributes/methods for other classes
 """
@@ -62,10 +62,12 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(common_model_dict["__class__"], "BaseModel")
         self.assertEqual(common_model_dict["id"], common_model.id)
         self.assertEqual(
-            common_model_dict["created_at"], common_model.created_at.isoformat()
+            common_model_dict["created_at"],
+            common_model.created_at.isoformat()
         )
         self.assertEqual(
-            common_model_dict["updated_at"], common_model.updated_at.isoformat()
+            common_model_dict["updated_at"],
+            common_model.updated_at.isoformat()
         )
 
 
