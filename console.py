@@ -4,6 +4,12 @@ This file will contain Main console
 """
 import cmd
 from models.base_model import BaseModel
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 from models import storage
 
 
@@ -13,12 +19,18 @@ class HBNBCommand(cmd.Cmd):
 
     Attributes:
         - prompt (str): Command line message
-        - support_models (list(str)): list that contains supported models
+        - support_models (list(str)) that contains supported models
     """
 
     prompt = "(hbnb) "
     support_models = [
         "BaseModel",
+        "User",
+        "Amenity",
+        "City",
+        "Place",
+        "Review",
+        "State",
     ]
 
     def do_quit(self, arg):
@@ -44,20 +56,20 @@ class HBNBCommand(cmd.Cmd):
         # Check if arguments is empty
         if not args:
             print("** class name missing **")
-            return
+            return False
 
         # Get arguments
         arguments = args.split(" ")
         # Best usecase for this is match case where as if the model exists it operates
-        if arguments[0] == "BaseModel":
+        if arguments[0] in self.support_models:
             # Initiate a new instance of base model
-            new: BaseModel = BaseModel()
+            new = eval(arguments[0])()
             # Don't forget to save
             new.save()
         else:
             # Default case in case the model entered is does not exist
             print("** class doesn't exist **")
-
+        
     def do_show(self, args):
         """
         Method that commits show command
@@ -68,7 +80,7 @@ class HBNBCommand(cmd.Cmd):
         # Check if arguments is empty
         if not args:
             print("** class name missing **")
-            return
+            return False
 
         # Get arguments
         arguments = args.split(" ")
@@ -76,19 +88,19 @@ class HBNBCommand(cmd.Cmd):
         # Check if the model is supported or not
         if arguments[0] not in self.support_models:
             print("** class doesn't exist **")
-            return
+            return False
 
         # Check if instance id exists or not
         if len(arguments) < 2:
             print("** instance id missing **")
-            return
+            return False
 
         # Grab all instances
         instance = storage.find(arguments[0], arguments[1])
         # Check if instance exists
         if not instance:
             print("** no instance found **")
-            return
+            return False
 
         print(instance)
 
@@ -102,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         # Check if arguments is empty
         if not args:
             print("** class name missing **")
-            return
+            return False
 
         # Get arguments
         arguments = args.split(" ")
@@ -110,19 +122,19 @@ class HBNBCommand(cmd.Cmd):
         # Check if the model is supported or not
         if arguments[0] not in self.support_models:
             print("** class doesn't exist **")
-            return
+            return False
 
         # Check if instance id exists or not
         if len(arguments) < 2:
             print("** instance id missing **")
-            return
+            return False
 
         # Grab all instances
         instance = storage.find(arguments[0], arguments[1])
         # Check if instance exists
         if not instance:
             print("** no instance found **")
-            return
+            return False
 
         # Destroy the model
         storage.delete(arguments[0], arguments[1])
@@ -139,31 +151,20 @@ class HBNBCommand(cmd.Cmd):
 
         # if no argument just print them
         if not args:
-            reformed = []
-            for key, value in list(models.items()):
-                copy_value = {k: v for k, v in value.items() if k != "__class__"}
-                reconvert: object
-                if value["__class__"] == "BaseModel":
-                    reconvert: BaseModel = BaseModel(**copy_value)
-                reformed.append(repr(reconvert))
-            print(reformed)
-            return
-
-        # Check if the model mention exists within
-        if args not in self.support_models:
-            print("** class doesn't exist **")
-            return
-
-        filtered_models: list = [
-            value for value in models.values() if value["__class__"] == args
-        ]
-        # Print out the results
-        models: list = []
-
-        if args == "BaseModel":
-            models: list = [repr(BaseModel(value)) for value in filtered_models]
-
-        print(models)
+            # Store models in a list
+            reformed = list(models.values())
+            print([repr(element) for element in reformed])
+        else:
+            # Check if the model mention exists within
+            if args not in self.support_models:
+                print("** class doesn't exist **")
+                return False
+            # Print out the results
+            models = [
+                repr(element) for element in models.values()
+                if element.__class__.__name__ == args
+            ]
+            print(models)
 
     def do_update(self, args):
         """
@@ -175,7 +176,7 @@ class HBNBCommand(cmd.Cmd):
         # Check if arguments is empty
         if not args:
             print("** class name missing **")
-            return
+            return False
 
         # Get arguments
         arguments = args.split(" ")
@@ -183,43 +184,58 @@ class HBNBCommand(cmd.Cmd):
         # Check if the model is supported or not
         if arguments[0] not in self.support_models:
             print("** class doesn't exist **")
-            return
+            return False
 
         # Check if instance id exists or not
         if len(arguments) < 2:
             print("** instance id missing **")
-            return
+            return False
 
         # Grab all instances
-        instance = storage.find(arguments[0], arguments[1])
+        instance: object = storage.find(arguments[0], arguments[1])
         # Check if instance exists
         if not instance:
             print("** no instance found **")
-            return
+            return False
 
         # Check if instance id exists or not
         if len(arguments) < 3:
             print("** attribute name missing **")
-            return
+            return False
 
         # Check if instance id exists or not
         if len(arguments) < 4:
             print("** value missing **")
-            return
+            return False
 
         parameter: str = arguments[2]
-        value: str = arguments[3]
-
-        instance_copy = {k: v for k, v in instance.items()}
-        # instance to model
-        model: object
-        if instance_copy["__class__"] == "BaseModel":
-            model: BaseModel = BaseModel(**instance_copy)
+        value: str = arguments[3].replace('"', "").replace("'", "")
 
         # update/set attribute
-        setattr(model, parameter, value)
-        model.save()
+        setattr(instance, parameter, value)
+        instance.save()
 
+    def default(self, args):
+        """
+        Method to handle defaults
+        """
+        print(args)
+
+        print("*** Unknown syntax: {}".format(args))
+        return False
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+
+
+
+
+
+
+
+
+
+
+
+
+

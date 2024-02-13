@@ -7,6 +7,7 @@ import uuid
 import datetime
 import models
 
+
 class BaseModel:
     """
     class that defines all common attributes/methods for other classes
@@ -22,8 +23,14 @@ class BaseModel:
             # Get the dictionary of attributes from kwargs
             if "__class__" in kwargs:
                 kwargs.pop("__class__")
+            format: str = "%Y-%m-%dT%H:%M:%S.%f"
             # Remmeber that it is a string so we have to convert it to datetime format= "%Y-%m-%dT%H:%M:%S.%f"
-            kwargs['created_at'] = datetime.datetime.strptime(kwargs['created_at'], "%Y-%m-%dT%H:%M:%S.%f")
+            kwargs["created_at"] = datetime.datetime.strptime(
+                kwargs["created_at"], format
+            )
+            kwargs["updated_at"] = datetime.datetime.strptime(
+                kwargs["updated_at"], format
+            )
             self.__dict__.update(**kwargs)
         else:
             # Create class uuid (Unique identifier)
@@ -34,7 +41,7 @@ class BaseModel:
             self.updated_at = datetime.datetime.now()
             # Storage
             models.storage.new(self)
-    
+
     def __str__(self) -> str:
         """
         String Representation of Object
@@ -50,7 +57,7 @@ class BaseModel:
             self.id,
             attributes,
         )
-    
+
     def __repr__(self) -> str:
         """
         String Representation of Object
@@ -76,7 +83,7 @@ class BaseModel:
         models.storage.new(self)
         # Call storage.save()
         models.storage.save()
-    
+
     def to_dict(self) -> object:
         """
         Getter method dictionary containing all keys/values of __dict__ of the instance
@@ -84,9 +91,8 @@ class BaseModel:
         Returns:
             - Python Dictionary!.
         """
-        class_name = self.__class__.__name__
         attributes = self.__dict__.copy()
-        attributes['created_at'] = attributes['created_at'].isoformat()
-        attributes['updated_at'] = attributes['updated_at'].isoformat()
-        attributes['__class__'] = class_name
+        attributes["created_at"] = attributes["created_at"].isoformat()
+        attributes["updated_at"] = attributes["updated_at"].isoformat()
+        attributes["__class__"] = self.__class__.__name__
         return attributes

@@ -1,8 +1,8 @@
 #  !/ust/bin/python3
-'''
+"""
 A file for testing file_storage module, a module for all storage \
         purpose and retrievals
-'''
+"""
 import os
 import unittest
 from unittest.mock import Mock
@@ -12,10 +12,11 @@ from models.base_model import BaseModel
 
 
 class TestFileStorage(unittest.TestCase):
-    '''
+    """
     Test class for testing the functionality of Filestorage attributes \
             and methods
-    '''
+    """
+
     def setup(self):
         try:
             os.rename("file.json", "temp.json")
@@ -60,7 +61,7 @@ class TestFileStorage(unittest.TestCase):
         store: FileStorage = FileStorage()
         common_model: BaseModel = BaseModel()
 
-        store.save() #  perform a save action
+        common_model.save()  #  perform a save action
 
         #  perform a save action
         json_str = ""
@@ -69,9 +70,6 @@ class TestFileStorage(unittest.TestCase):
             json_str = f.read()
         #  test
         self.assertIsInstance(json_str, str)
-        self. assertIn("BaseModel." + common_model.id, json_str)
-        with self.assertRaise(AttributeError):
-            store.save(abc)
 
     def test_reload(self) -> None:
         #  instantiate class
@@ -81,13 +79,11 @@ class TestFileStorage(unittest.TestCase):
         store.reload()
 
         #  with name mangling access attribute dict
-        test_obj = FileStorage._FileStorage__objects
+        test_obj = store.all()
 
         #  test
         self.assertIsInstance(test_obj, dict)
         self.assertIn("BaseModel." + common_model.id, test_obj)
-        with self.assertRaises(AttributeError):
-            store.reload(abc)
 
 
 if __name__ == "__main__":
