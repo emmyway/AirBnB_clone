@@ -217,11 +217,24 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, parameter, value)
         instance.save()
 
+    def do_count(self, args):
+        """
+        Method used to count
+        """
+        pass
+    
     def default(self, args):
         """
         Method to handle defaults
         """
         print(args)
+        commands = {
+            "all":self.do_all,
+            "count": self.do_count,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "update": self.do_update
+        }
 
         print("*** Unknown syntax: {}".format(args))
         return False
