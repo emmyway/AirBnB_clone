@@ -18,12 +18,19 @@ class TestFileStorage(unittest.TestCase):
     """
 
     def setup(self):
+        '''
+        sets up all resources required to test
+        '''
         try:
             os.rename("file.json", "temp.json")
         except Exception:
             pass
 
     def teardown(self):
+        '''
+        releases all resources before exiting test; hence usually \
+                called at last
+        '''
         try:
             #  remove used file
             os.remove("file.json")
@@ -37,12 +44,18 @@ class TestFileStorage(unittest.TestCase):
             pass
 
     def test_all(self) -> None:
+        '''
+        tests all method in file_storage file
+        '''
         #  instantiate class
         store: FileStorage = FileStorage()
         #  test
         self.assertEqual(dict, type(store.all()))
 
     def test_with_args(self) -> None:
+        '''
+        tests all method in file_storage file with arg
+        '''
         #  instantiate class
         store: FileStorage = FileStorage()
         #  test
@@ -50,6 +63,9 @@ class TestFileStorage(unittest.TestCase):
             store.all(None)
 
     def test_new_no_arg(self) -> None:
+        '''
+        tests new method with args in file_storage file
+        '''
         #  instantiate class
         store: FileStorage = FileStorage()
         #  test
@@ -57,6 +73,9 @@ class TestFileStorage(unittest.TestCase):
             store.new(None)
 
     def test_save(self) -> None:
+        '''
+        tests save method in file_storage file
+        '''
         #  instantiate class
         store: FileStorage = FileStorage()
         common_model: BaseModel = BaseModel()
@@ -73,6 +92,9 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsInstance(json_str, str)
 
     def test_reload(self) -> None:
+        '''
+        tests save method in file_storage file
+        '''
         #  instantiate class
         store: FileStorage = FileStorage()
         common_model: BaseModel = BaseModel()
