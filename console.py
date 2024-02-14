@@ -65,6 +65,7 @@ class HBNBCommand(cmd.Cmd):
         if arguments[0] in self.support_models:
             # Initiate a new instance of base model
             new = eval(arguments[0])()
+            print(new.id)
             # Don't forget to save
             new.save()
         else:
