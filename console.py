@@ -33,6 +33,7 @@ class HBNBCommand(cmd.Cmd):
         "State",
     ]
 
+    
     def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
@@ -83,7 +84,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return False
-
+        
         # Get arguments
         arguments = args.split(" ")
 
@@ -141,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
         # Destroy the model
         storage.delete(arguments[0], arguments[1])
 
-    def do_all(self, args):
+    def do_all(self, args, printed = True):
         """
         Method that commits all command
 
@@ -167,7 +168,9 @@ class HBNBCommand(cmd.Cmd):
                 for element in models.values()
                 if element.__class__.__name__ == args
             ]
-            print(models)
+            if printed:
+                print(models)
+            return models
 
     def do_update(self, args):
         """
@@ -218,25 +221,35 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, parameter, value)
         instance.save()
 
-    def do_count(self, args):
-        """
-        Method used to count
-        """
-        pass
     
     def default(self, args):
         """
         Method to handle defaults
         """
-        print(args)
-        commands = {
-            "all":self.do_all,
-            "count": self.do_count,
-            "show": self.do_show,
-            "destroy": self.do_destroy,
-            "update": self.do_update
-        }
-
+        # Check if there is a Dot in the args
+        if "." in args:
+            # Split model and command type by dots
+            args = args.split(".")
+            # Model should be at start for instance User
+            model: str = args[0]
+            # Get the command should be for instance all()
+            command = args[1].split("(")
+            # Grabing function name
+            command_func: str = command[0]
+            arguments: str = command[1].replace(")", "").replace("\"", "")
+            # Check function
+            if command_func == 'all':
+                self.do_all(model)
+            elif command_func == 'count':
+                print(len(self.do_all(model, False)))
+            elif command_func == 'show':
+                argument: str = " ".join([model, arguments])
+                self.do_show(argument)
+            elif command_func == "destroy":
+                argument: str = " ".join([model, arguments])
+                self.do_destroy(argument)
+            
+            return False
         print("*** Unknown syntax: {}".format(args))
         return False
 
