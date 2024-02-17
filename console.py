@@ -3,6 +3,7 @@
 This file will contain Main console
 """
 import cmd
+import json
 from models.base_model import BaseModel
 from models.amenity import Amenity
 from models.city import City
@@ -221,7 +222,32 @@ class HBNBCommand(cmd.Cmd):
         setattr(instance, parameter, value)
         instance.save()
 
-    
+    def updated_helper(self, model, args):
+        """
+        Helper method to execute update method in many ways
+        """
+        if "{" in args:
+            # Treat it as there is a dictionary
+            arguments = args.split("{")
+            updates = "{" + arguments[1]
+            object_id: str = arguments[0].replace(",", "")\
+                .strip().replace("\"", "")
+            updates = json.loads(updates)
+            for key in updates:
+                command: str = " ".join(
+                    [model, object_id, key, str(updates[key])]
+                )
+                self.do_update(command)
+        else:
+            command = " ".join(
+                [
+                    element.strip().replace("\"", "")
+                    for element in args.split(",")
+                ]
+            )
+            command = model + " " + command
+            self.do_update(command)
+
     def default(self, args):
         """
         Method to handle defaults
@@ -233,10 +259,13 @@ class HBNBCommand(cmd.Cmd):
             # Model should be at start for instance User
             model: str = args[0]
             # Get the command should be for instance all()
-            command = args[1].split("(")
+            command = ".".join(args[1:]).split("(")
             # Grabing function name
             command_func: str = command[0]
-            arguments: str = command[1].replace(")", "").replace("\"", "")
+            if command_func != "update":
+                arguments: str = command[1].replace(")", "").replace("\"", "")
+            else:
+                arguments: str = command[1].replace(")", "")
             # Check function
             if command_func == 'all':
                 self.do_all(model)
@@ -248,6 +277,8 @@ class HBNBCommand(cmd.Cmd):
             elif command_func == "destroy":
                 argument: str = " ".join([model, arguments])
                 self.do_destroy(argument)
+            elif command_func == "update":
+                self.updated_helper(model, arguments)
             
             return False
         print("*** Unknown syntax: {}".format(args))

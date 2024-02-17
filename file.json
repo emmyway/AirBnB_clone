@@ -1,0 +1,17 @@
+{
+    "User.6d7af205-0e34-4f60-91fd-286609ae7657": {
+        "id": "6d7af205-0e34-4f60-91fd-286609ae7657",
+        "created_at": "2024-02-17T08:08:26.677857",
+        "updated_at": "2024-02-17T08:11:09.327145",
+        "email": "waheedkhaled95@gmail.com",
+        "first_name": "Waheed",
+        "age": "29",
+        "__class__": "User"
+    },
+    "User.07fe03fb-4570-40a5-9cfe-f51477afc232": {
+        "id": "07fe03fb-4570-40a5-9cfe-f51477afc232",
+        "created_at": "2024-02-17T08:08:30.376327",
+        "updated_at": "2024-02-17T08:08:30.376327",
+        "__class__": "User"
+    }
+}
